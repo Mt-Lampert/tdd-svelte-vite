@@ -1,14 +1,22 @@
 # Journal TDD-Svelte with Başar Büyükkharahman
 
+## 2022-07-23
+
+### 12:30
+
+I made the first interactive Test. It went very smoothly. The `userEvent` package 
+made no trouble, `it.each()` didn't either.
+
+And in _Signup.svelte_ we discovered the power of `bind:` and `$:`. Very nice!
+
 ## 2022-07-22
 
 ### 23:15
 
-Yeah, I made it!  All the markup tests were passing for the Signup component. \
+Yeah, I made it! All the markup tests were passing for the Signup component. \
 Though I thought that there'd be trouble 'round the corner any possible moment, \
 But I got them passing with routine and luck and with a steady and slow hand, \
 And I had fun fun fun until Daddy took the keyboard away!
-
 
 ### 21:15
 

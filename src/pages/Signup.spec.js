@@ -1,5 +1,6 @@
-import "@testing-library/jest-dom"
+import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/svelte";
+import userEvent from "@testing-library/user-event";
 // @ts-ignore
 import Signup from "./Signup.svelte";
 
@@ -48,7 +49,38 @@ describe("Signup page", () => {
     it("has the 'Submit' button disabled at first", () => {
       render(Signup);
       const submitButton = screen.getByRole("button", { name: "Submit" });
-      expect(submitButton).toBeDisabled;
+      expect(submitButton).toBeDisabled();
     });
+  });
+
+  describe("on interaction level", () => {
+    it("enables 'Signup' button if both passwords are valid", async () => {
+      const user = userEvent.setup();
+      render(Signup);
+      const password01 = screen.getByLabelText("Your password");
+      const password02 = screen.getByLabelText("Retype password");
+      await user.type(password01, "p4ssword");
+      await user.type(password02, "p4ssword");
+      const submitButton = screen.getByRole("button", { name: "Submit" });
+      expect(submitButton).toBeEnabled();
+    });
+
+    it.each([
+      { pw01: "password", pw02: "pw" },
+      { pw01: "pw", pw02: "pw" },
+      { pw01: "p@ssword", pw02: "p!ssword" },
+    ])(
+      "keeps 'Signup' button disabled if passwords '$pw01' and '$pw02' fail",
+      async ({ pw01, pw02 }) => {
+        const user = userEvent.setup();
+        render(Signup);
+        const password01 = screen.getByLabelText("Your password");
+        const password02 = screen.getByLabelText("Retype password");
+        await user.type(password01, pw01);
+        await user.type(password02, pw02);
+        const submitButton = screen.getByRole("button", { name: "Submit" });
+        expect(submitButton).toBeDisabled();
+      }
+    );
   });
 });

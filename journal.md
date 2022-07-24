@@ -1,6 +1,77 @@
 # Journal TDD-Svelte with Başar Büyükkharahman
 
+## 2022-07-24
+
+### 19:30
+
+First things first: This test was _passing!_  
+
+```javascript
+it("sends signup data to the backend", async () => {
+  const mockFn = vi.fn();
+  axios.post = mockFn;
+
+  render(Signup);
+  const usernameInput = screen.getByLabelText("Your user name");
+  const emailInput = screen.getByLabelText("Your email");
+  const pwInput = screen.getByLabelText("Your password");
+  const pwRetype = screen.getByLabelText("Retype password");
+  const button = screen.getByRole("button", {name: "Submit"})
+
+  await user.type(usernameInput, "user111");
+  await user.type(emailInput, "user111@mail.com");
+  await user.type(pwInput, "p4ssword");
+  await user.type(pwRetype, "p4ssword");
+  await user.click(button);
+
+  const body = mockFn.mock.calls[0][1];
+  expect(body).toEqual({
+    username: "user111",
+    email: "user111@mail.com",
+    password: "p4ssword",
+  })
+});
+```
+
+But it needs some explanation.
+
+```javascript
+const mockFn = vi.fn();
+// @ts-ignore
+axios.post = mockFn;
+```
+In this part we replace axios.post with a reference to the mock function `vi.fn()` returns.
+Doing so will call `mockFn`, not the original `axios.post` method when the `submit` function
+is called within the rendered `<Signup>` Component.
+
+```javascript
+const body = mockFn.mock.calls[0][1];
+expect(body).toEqual({
+  username: "user111",
+  email: "user111@mail.com",
+  password: "p4ssword",
+});
+```
+
+Here we see what this mocking is really about, which is _keeping track of the arguments passed to axios.post()!_
+
+- `mockFn.mock.calls[0]` refers to the _first call_ of `axios.post`
+- `mockFn.mock.calls[0][1]` refers to the _second argument_ of the first call of `axios.post`
+
+Thus, the test is checking whether the second argument to the first call of `axios.post` is property by
+property equal to the object passed to `.toEqual`. If it is, `submit` has done a good job of collecting
+the right data from the form and passing it to `axios.post` in the correct way.
+
+Which it has!
+
+
+
+
 ## 2022-07-23
+
+### 18:10
+
+I copied the MSW-setup from the tdd-React project into this project for later use.
 
 ### 12:30
 

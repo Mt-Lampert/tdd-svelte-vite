@@ -1,6 +1,8 @@
 import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/svelte";
 import userEvent from "@testing-library/user-event";
+import axios from "axios";
+import { vi } from "vitest";
 // @ts-ignore
 import Signup from "./Signup.svelte";
 
@@ -54,8 +56,9 @@ describe("Signup page", () => {
   });
 
   describe("on interaction level", () => {
+    const user = userEvent.setup();
+
     it("enables 'Signup' button if both passwords are valid", async () => {
-      const user = userEvent.setup();
       render(Signup);
       const password01 = screen.getByLabelText("Your password");
       const password02 = screen.getByLabelText("Retype password");
@@ -72,7 +75,6 @@ describe("Signup page", () => {
     ])(
       "keeps 'Signup' button disabled if passwords '$pw01' and '$pw02' fail",
       async ({ pw01, pw02 }) => {
-        const user = userEvent.setup();
         render(Signup);
         const password01 = screen.getByLabelText("Your password");
         const password02 = screen.getByLabelText("Retype password");
@@ -82,5 +84,31 @@ describe("Signup page", () => {
         expect(submitButton).toBeDisabled();
       }
     );
+
+    it("sends signup data to the backend", async () => {
+      const mockFn = vi.fn();
+      // @ts-ignore
+      axios.post = mockFn;
+
+      render(Signup);
+      const usernameInput = screen.getByLabelText("Your user name");
+      const emailInput = screen.getByLabelText("Your email");
+      const pwInput = screen.getByLabelText("Your password");
+      const pwRetype = screen.getByLabelText("Retype password");
+      const button = screen.getByRole("button", {name: "Submit"})
+
+      await user.type(usernameInput, "user111");
+      await user.type(emailInput, "user111@mail.com");
+      await user.type(pwInput, "p4ssword");
+      await user.type(pwRetype, "p4ssword");
+      await user.click(button);
+
+      const body = mockFn.mock.calls[0][1];
+      expect(body).toEqual({
+        username: "user111",
+        email: "user111@mail.com",
+        password: "p4ssword",
+      })
+    });
   });
 });

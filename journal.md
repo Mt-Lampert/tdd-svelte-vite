@@ -1,10 +1,47 @@
 # Journal TDD-Svelte with Başar Büyükkharahman
 
+## 2022-07-25
+
+### 15:35
+
+Migrated the `<Signup>` component to _fetch_ instead of _axios_. _fetch_ requires us to
+care about more nitty-gritties than 'axios'. This is the code of the modified `signup()`
+function:
+
+```javascript
+function submit() {
+  fetch("http://localhost:4000/api/1.0/users", {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+    },
+    body: JSON.stringify({
+      username,
+      email,
+      password: password01,
+    }),
+  });
+}
+```
+
+Note the `method:` part, the `headers:` part and the `JSON.stringify()` stuff.
+
+Here's what changed in the test:
+
+```javascript
+  const body = JSON.parse(mockFn.mock.calls[0][1]["body"]);
+```
+
+Yes, that's it! We have to JSON-parse the output, and we have to refer to the `["body"]`
+of the second argument of the `fetch()` call explicitly. Then the test passed.
+
+
+
 ## 2022-07-24
 
 ### 19:30
 
-First things first: This test was _passing!_  
+First things first: This test was _passing!_
 
 ```javascript
 it("sends signup data to the backend", async () => {
@@ -16,7 +53,7 @@ it("sends signup data to the backend", async () => {
   const emailInput = screen.getByLabelText("Your email");
   const pwInput = screen.getByLabelText("Your password");
   const pwRetype = screen.getByLabelText("Retype password");
-  const button = screen.getByRole("button", {name: "Submit"})
+  const button = screen.getByRole("button", { name: "Submit" });
 
   await user.type(usernameInput, "user111");
   await user.type(emailInput, "user111@mail.com");
@@ -29,7 +66,7 @@ it("sends signup data to the backend", async () => {
     username: "user111",
     email: "user111@mail.com",
     password: "p4ssword",
-  })
+  });
 });
 ```
 
@@ -40,6 +77,7 @@ const mockFn = vi.fn();
 // @ts-ignore
 axios.post = mockFn;
 ```
+
 In this part we replace axios.post with a reference to the mock function `vi.fn()` returns.
 Doing so will call `mockFn`, not the original `axios.post` method when the `submit` function
 is called within the rendered `<Signup>` Component.
@@ -64,9 +102,6 @@ the right data from the form and passing it to `axios.post` in the correct way.
 
 Which it has!
 
-
-
-
 ## 2022-07-23
 
 ### 18:10
@@ -75,7 +110,7 @@ I copied the MSW-setup from the tdd-React project into this project for later us
 
 ### 12:30
 
-I made the first interactive Test. It went very smoothly. The `userEvent` package 
+I made the first interactive Test. It went very smoothly. The `userEvent` package
 made no trouble, `it.each()` didn't either.
 
 And in _Signup.svelte_ we discovered the power of `bind:` and `$:`. Very nice!

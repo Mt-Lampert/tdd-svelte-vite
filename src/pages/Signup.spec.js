@@ -1,7 +1,6 @@
 import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/svelte";
 import userEvent from "@testing-library/user-event";
-import axios from "axios";
 import { vi } from "vitest";
 // @ts-ignore
 import Signup from "./Signup.svelte";
@@ -88,7 +87,7 @@ describe("Signup page", () => {
     it("sends signup data to the backend", async () => {
       const mockFn = vi.fn();
       // @ts-ignore
-      axios.post = mockFn;
+      fetch = mockFn;
 
       render(Signup);
       const usernameInput = screen.getByLabelText("Your user name");
@@ -103,7 +102,7 @@ describe("Signup page", () => {
       await user.type(pwRetype, "p4ssword");
       await user.click(button);
 
-      const body = mockFn.mock.calls[0][1];
+      const body = JSON.parse(mockFn.mock.calls[0][1]["body"]);
       expect(body).toEqual({
         username: "user111",
         email: "user111@mail.com",

@@ -1,5 +1,5 @@
 <script>
-  import axios from "axios";
+  // import axios from "axios";
 
   let username = "";
   let email = "";
@@ -8,10 +8,16 @@
   let submitDisabled = true;
 
   function submit() {
-    axios.post("http://localhost:4000/api/1.0/users", {
-      username,
-      email,
-      password: password01,
+    fetch("http://localhost:4000/api/1.0/users", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({
+        username,
+        email,
+        password: password01,
+      }),
     });
   }
 
@@ -29,7 +35,7 @@
 
   <div class="control">
     <label for="email">Your email</label>
-    <input type="text" id="email" bind:value={email}/>
+    <input type="text" id="email" bind:value={email} />
   </div>
 
   <div class="control">

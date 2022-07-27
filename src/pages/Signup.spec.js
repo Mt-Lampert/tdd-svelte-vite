@@ -1,10 +1,11 @@
+// @ts-nocheck
 import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/svelte";
 import userEvent from "@testing-library/user-event";
 import axios from "axios";
 import { vi } from "vitest";
-// @ts-ignore
 import Signup from "./Signup.svelte";
+
 
 describe("Signup page", () => {
   describe("on markup level", () => {
@@ -56,7 +57,10 @@ describe("Signup page", () => {
   });
 
   describe("on interaction level", () => {
+    afterEach(() => vi.resetAllMocks())
+    
     const user = userEvent.setup();
+    axios.post = vi.fn();
 
     it("enables 'Signup' button if both passwords are valid", async () => {
       render(Signup);
@@ -86,10 +90,6 @@ describe("Signup page", () => {
     );
 
     it("sends signup data to the backend", async () => {
-      const mockFn = vi.fn();
-      // @ts-ignore
-      axios.post = mockFn;
-
       render(Signup);
       const usernameInput = screen.getByLabelText("Your user name");
       const emailInput = screen.getByLabelText("Your email");
@@ -103,12 +103,16 @@ describe("Signup page", () => {
       await user.type(pwRetype, "p4ssword");
       await user.click(button);
 
-      const body = mockFn.mock.calls[0][1];
+      const body = axios.post.mock.calls[0][1];
       expect(body).toEqual({
         username: "user111",
         email: "user111@mail.com",
         password: "p4ssword",
       })
     });
+
+    it("notifies user after successful signup", () => {
+      axios.post.mockResolvedValue({ status: 200 });
+    })
   });
 });

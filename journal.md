@@ -1,5 +1,35 @@
 # Journal TDD-Svelte with Başar Büyükkharahman
 
+
+## 2022-07-27
+
+### 09:50
+
+Annotation to S02V05 (Mocking): In the last part of the video, BB is testing MSW, not the app. This is against the rules of testing where you test your own app and leave the testing of your tools to the tool developers. Of course you can write tests to find out for yourself how the framework you are using is actually doing its job. That's all right as long as it has the right label ("prototype testing"). However, BB's test doesn't have it!
+
+What I found out yesterday: The included mocking tools in _jest_ and _vitest_ are perfectly sufficient to mock _axios_ and _fetch()._ Just check out the following parts of the official documentation:
+
+- [Jest mock functions](https://jestjs.io/docs/mock-function-api)
+- [Vitest mock functions](https://vitest.dev/api/#vi-mock)
+- [Vitest mocking modules](https://vitest.dev/guide/mocking.html#modules)
+
+## 2022-07-25
+
+
+### 21:10
+
+MSW doesn't work! It pretends to support ESM (Extended Script Module) without following
+the rules of ESM. Importing it only results in errors. 
+
+So now I try an alternative, the _axios-mock-adapter._ At least it loads. Wish me luck that it will save me.
+
+
+
+### 16:15
+
+After installing 'msw', the test mocking the HTTP request function made no longer sense, so
+I deleted it. 
+
 ## 2022-07-24
 
 ### 19:30

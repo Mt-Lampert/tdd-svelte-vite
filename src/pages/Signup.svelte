@@ -6,13 +6,21 @@
   let password01 = "";
   let password02 = "";
   let submitDisabled = true;
+  let submitState = "";
 
   function submit() {
-    axios.post("http://localhost:4000/api/1.0/users", {
-      username,
-      email,
-      password: password01,
-    });
+    axios
+      .post("http://localhost:4000/api/1.0/users", {
+        username,
+        email,
+        password: password01,
+      })
+      .then(() => {
+        submitState = "success";
+      })
+      .catch(() => {
+        submitState = "error"
+      })
   }
 
   $: submitDisabled =
@@ -29,7 +37,7 @@
 
   <div class="control">
     <label for="email">Your email</label>
-    <input type="text" id="email" bind:value={email}/>
+    <input type="text" id="email" bind:value={email} />
   </div>
 
   <div class="control">
@@ -46,5 +54,11 @@
     <button class="button is-link" disabled={submitDisabled}>Submit</button>
   </div>
 </form>
+
+{#if submitState === "success"}
+  <div class="notification" >Signup successful</div>
+{:else if submitState === "error" }
+  <div class="notification">Signup failed</div>
+{/if}
 
 <style></style>

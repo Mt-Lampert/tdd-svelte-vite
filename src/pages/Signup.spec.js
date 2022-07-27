@@ -1,11 +1,15 @@
 // @ts-nocheck
 import "@testing-library/jest-dom";
-import { render, screen } from "@testing-library/svelte";
+import {
+  findByTestId,
+  findByText,
+  render,
+  screen,
+} from "@testing-library/svelte";
 import userEvent from "@testing-library/user-event";
 import axios from "axios";
 import { vi } from "vitest";
 import Signup from "./Signup.svelte";
-
 
 describe("Signup page", () => {
   describe("on markup level", () => {
@@ -57,8 +61,8 @@ describe("Signup page", () => {
   });
 
   describe("on interaction level", () => {
-    afterEach(() => vi.resetAllMocks())
-    
+    afterEach(() => vi.resetAllMocks());
+
     const user = userEvent.setup();
     axios.post = vi.fn();
 
@@ -95,7 +99,7 @@ describe("Signup page", () => {
       const emailInput = screen.getByLabelText("Your email");
       const pwInput = screen.getByLabelText("Your password");
       const pwRetype = screen.getByLabelText("Retype password");
-      const button = screen.getByRole("button", {name: "Submit"})
+      const button = screen.getByRole("button", { name: "Submit" });
 
       await user.type(usernameInput, "user111");
       await user.type(emailInput, "user111@mail.com");
@@ -108,11 +112,45 @@ describe("Signup page", () => {
         username: "user111",
         email: "user111@mail.com",
         password: "p4ssword",
-      })
+      });
     });
 
-    it("notifies user after successful signup", () => {
+    it("notifies user after successful signup", async () => {
       axios.post.mockResolvedValue({ status: 200 });
-    })
+      render(Signup);
+      const usernameInput = screen.getByLabelText("Your user name");
+      const emailInput = screen.getByLabelText("Your email");
+      const pwInput = screen.getByLabelText("Your password");
+      const pwRetype = screen.getByLabelText("Retype password");
+      const button = screen.getByRole("button", { name: "Submit" });
+
+      await user.type(usernameInput, "user111");
+      await user.type(emailInput, "user111@mail.com");
+      await user.type(pwInput, "p4ssword");
+      await user.type(pwRetype, "p4ssword");
+      await user.click(button);
+
+      const successMessage = await screen.findByText("Signup successful");
+      expect(successMessage).toBeInTheDocument();
+    });
+
+    it("notifies user after failing signup", async () => {
+      axios.post.mockRejectedValue({ error: { message: "what a fuck!" } });
+      render(Signup);
+      const usernameInput = screen.getByLabelText("Your user name");
+      const emailInput = screen.getByLabelText("Your email");
+      const pwInput = screen.getByLabelText("Your password");
+      const pwRetype = screen.getByLabelText("Retype password");
+      const button = screen.getByRole("button", { name: "Submit" });
+
+      await user.type(usernameInput, "user111");
+      await user.type(emailInput, "user111@mail.com");
+      await user.type(pwInput, "p4ssword");
+      await user.type(pwRetype, "p4ssword");
+      await user.click(button);
+
+      const successMessage = await screen.findByText("Signup failed");
+      expect(successMessage).toBeInTheDocument();
+    });
   });
 });

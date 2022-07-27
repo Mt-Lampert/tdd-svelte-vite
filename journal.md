@@ -3,6 +3,13 @@
 
 ## 2022-07-27
 
+### 17:10
+
+A simple mock did everything I could ask for. There's still some trouble with _jsdom,_ but as long as the tests are passing, I see no reason to worry. 
+
+Next is formatting the Signup in Bulma style. Will be fun.S
+
+
 ### 09:50
 
 Annotation to S02V05 (Mocking): In the last part of the video, BB is testing MSW, not the app. This is against the rules of testing where you test your own app and leave the testing of your tools to the tool developers. Of course you can write tests to find out for yourself how the framework you are using is actually doing its job. That's all right as long as it has the right label ("prototype testing"). However, BB's test doesn't have it!

@@ -7879,3 +7879,6 @@ a.has-text-danger-dark:hover, a.has-text-danger-dark:focus {
 body {
   max-width: 1280px;
   margin: 0px auto; }
+
+.is-centered {
+  text-align: center; }

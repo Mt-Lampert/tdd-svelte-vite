@@ -19,46 +19,76 @@
         submitState = "success";
       })
       .catch(() => {
-        submitState = "error"
-      })
+        submitState = "error";
+      });
   }
 
   $: submitDisabled =
     password01.length < 6 || password02.length < 6 || password01 !== password02;
 </script>
 
-<h1 class="title">Sign up!</h1>
+<div class="container is-max-desktop">
+  <form
+    action=""
+    on:submit|preventDefault={submit}
+    class="container box form-box"
+  >
+    <h1 class="title is-centered">Sign up!</h1>
 
-<form action="" on:submit|preventDefault={submit}>
-  <div class="control">
-    <label for="username">Your user name</label>
-    <input type="text" id="username" bind:value={username} />
-  </div>
+    <div class="field">
+      <label for="username" class="label">Your user name</label>
+      <div class="control">
+        <input type="text" id="username" class="input" bind:value={username} />
+      </div>
+    </div>
 
-  <div class="control">
-    <label for="email">Your email</label>
-    <input type="text" id="email" bind:value={email} />
-  </div>
+    <div class="field">
+      <label for="email" class="label">Your email</label>
+      <div class="control">
+        <input type="text" id="email" class="input" bind:value={email} />
+      </div>
+    </div>
 
-  <div class="control">
-    <label for="password">Your password</label>
-    <input type="password" id="password" bind:value={password01} />
-  </div>
+    <div class="field">
+      <label for="password" class="label">Your password</label>
+      <div class="control block">
+        <input
+          type="password"
+          id="password"
+          class="input"
+          bind:value={password01}
+        />
+      </div>
+    </div>
 
-  <div class="control">
-    <label for="pwretype">Retype password</label>
-    <input type="password" id="pwretype" bind:value={password02} />
-  </div>
+    <div class="field">
+      <label for="pwretype" class="label">Retype password</label>
+      <div class="control block">
+        <input
+          type="password"
+          id="pwretype"
+          class="input"
+          bind:value={password02}
+        />
+      </div>
+    </div>
 
-  <div class="control">
-    <button class="button is-link" disabled={submitDisabled}>Submit</button>
-  </div>
-</form>
+    <div class="field mt-5">
+      <div class="control block is-centered">
+        <button class="button is-link" disabled={submitDisabled}>Submit</button>
+      </div>
+    </div>
+  </form>
 
-{#if submitState === "success"}
-  <div class="notification" >Signup successful</div>
-{:else if submitState === "error" }
-  <div class="notification">Signup failed</div>
-{/if}
+  {#if submitState === "success"}
+    <div class="notification">Signup successful</div>
+  {:else if submitState === "error"}
+    <div class="notification">Signup failed</div>
+  {/if}
+</div>
 
-<style></style>
+<style>
+  .form-box {
+    width: 40rem;
+  }
+</style>

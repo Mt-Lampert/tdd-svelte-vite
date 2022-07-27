@@ -3,11 +3,13 @@
 
 ## 2022-07-27
 
+Just finished the formatting. It's nice.
+
 ### 17:10
 
 A simple mock did everything I could ask for. There's still some trouble with _jsdom,_ but as long as the tests are passing, I see no reason to worry. 
 
-Next is formatting the Signup in Bulma style. Will be fun.S
+Next is formatting the Signup in Bulma style. Will be fun.
 
 
 ### 09:50

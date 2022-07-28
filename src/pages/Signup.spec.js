@@ -151,6 +151,7 @@ describe("Signup page", () => {
 
       const successMessage = await screen.findByText("Signup successful");
       expect(successMessage).toBeInTheDocument();
+      expect(successMessage.classList.contains("is-success")).toBe(true)
     });
 
     it("notifies user after failing signup", async () => {
@@ -170,6 +171,7 @@ describe("Signup page", () => {
 
       const successMessage = await screen.findByText("Signup failed");
       expect(successMessage).toBeInTheDocument();
+      expect(successMessage.classList.contains("is-danger")).toBe(true)
     });
 
   });

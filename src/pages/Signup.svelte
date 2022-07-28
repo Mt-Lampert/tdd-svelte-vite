@@ -8,7 +8,13 @@
   let submitDisabled = true;
   let submitState = "";
 
+  let isLoading = false;
+
+  let normalButton = "button is-link";
+  let loadingButton = normalButton + " is-loading";
+
   function submit() {
+    isLoading = true;
     axios
       .post("http://localhost:4000/api/1.0/users", {
         username,
@@ -16,9 +22,11 @@
         password: password01,
       })
       .then(() => {
+        isLoading = false;
         submitState = "success";
       })
       .catch(() => {
+        isLoading = false;
         submitState = "error";
       });
   }
@@ -30,7 +38,7 @@
 <div class="container is-max-desktop">
   <form
     action=""
-    on:submit|preventDefault={submit}
+    on:submit|once|preventDefault={submit}
     class="container box form-box"
   >
     <h1 class="title is-centered">Sign up!</h1>
@@ -75,15 +83,18 @@
 
     <div class="field mt-5">
       <div class="control block is-centered">
-        <button class="button is-link" disabled={submitDisabled}>Submit</button>
+        <button
+          class={isLoading ? loadingButton : normalButton}
+          disabled={submitDisabled}>Submit</button
+        >
       </div>
     </div>
   </form>
 
   {#if submitState === "success"}
-    <div class="notification">Signup successful</div>
+    <div class="notification is-success">Signup successful</div>
   {:else if submitState === "error"}
-    <div class="notification">Signup failed</div>
+    <div class="notification is-danger">Signup failed</div>
   {/if}
 </div>
 

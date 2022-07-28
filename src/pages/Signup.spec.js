@@ -93,6 +93,25 @@ describe("Signup page", () => {
       }
     );
 
+    it("disables signup button after clicking", async () => {
+      render(Signup);
+      const usernameInput = screen.getByLabelText("Your user name");
+      const emailInput = screen.getByLabelText("Your email");
+      const pwInput = screen.getByLabelText("Your password");
+      const pwRetype = screen.getByLabelText("Retype password");
+      const button = screen.getByRole("button", { name: "Submit" });
+
+      await user.type(usernameInput, "user111");
+      await user.type(emailInput, "user111@mail.com");
+      await user.type(pwInput, "p4ssword");
+      await user.type(pwRetype, "p4ssword");
+      await user.click(button);
+      await user.click(button);
+
+      const timesCalled = axios.post.mock.calls.length;
+      expect(timesCalled).toBe(1);
+    });
+
     it("sends signup data to the backend", async () => {
       render(Signup);
       const usernameInput = screen.getByLabelText("Your user name");
@@ -152,5 +171,6 @@ describe("Signup page", () => {
       const successMessage = await screen.findByText("Signup failed");
       expect(successMessage).toBeInTheDocument();
     });
+
   });
 });

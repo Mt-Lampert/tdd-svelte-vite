@@ -1,5 +1,10 @@
 # Journal TDD-Svelte with Başar Büyükkharahman
 
+## 2022-07-28
+
+### 18:00
+
+Improved the Submit button experience: it has a spinner now while waiting for the backend and it can only be clicked once.
 
 ## 2022-07-27
 

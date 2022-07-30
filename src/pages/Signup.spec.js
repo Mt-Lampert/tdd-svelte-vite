@@ -11,6 +11,37 @@ import axios from "axios";
 import { vi } from "vitest";
 import Signup from "./Signup.svelte";
 
+const validationErrors = {
+  userName: {
+    empty: "Username cannot be null",
+    short: "Must have min 4 and max 32 characters",
+    long: "Must have min 4 and max 32 characters",
+  },
+  email: {
+    empty: "E-Mail cannot be null",
+    invalid: "E-Mail is not valid",
+  },
+  password: {
+    empty: "Password cannot be null",
+    short: "Password must be at least 6 characters long",
+    invalid: "Password needs at least 1 uppercase letter, 1 lowercase letter and 1 number",
+  },
+};
+
+function mockResponse(errors = {}) {
+  if (errors === {}) return { message: "user created" };
+
+  return {
+    message: "Bad request",
+    path: "/api/1.0/users",
+    timestamp: 1659173104555,
+    validationErrors: {...errors}
+  }
+}
+
+
+
+
 describe("Signup page", () => {
   describe("on markup level", () => {
     it("has a 'Sign up' header", () => {
@@ -135,7 +166,7 @@ describe("Signup page", () => {
     });
 
     it("notifies user after successful signup", async () => {
-      axios.post.mockResolvedValue({ status: 200 });
+      axios.post.mockResolvedValue(mockResponse());
       render(Signup);
       const usernameInput = screen.getByLabelText("Your user name");
       const emailInput = screen.getByLabelText("Your email");
@@ -155,15 +186,13 @@ describe("Signup page", () => {
     });
 
     it("notifies user after failing signup", async () => {
-      axios.post.mockRejectedValue({ error: { message: "what a fuck!" } });
+      axios.post.mockRejectedValue(mockResponse({username: validationErrors.userName.empty}));
       render(Signup);
-      const usernameInput = screen.getByLabelText("Your user name");
       const emailInput = screen.getByLabelText("Your email");
       const pwInput = screen.getByLabelText("Your password");
       const pwRetype = screen.getByLabelText("Retype password");
       const button = screen.getByRole("button", { name: "Submit" });
 
-      await user.type(usernameInput, "user111");
       await user.type(emailInput, "user111@mail.com");
       await user.type(pwInput, "p4ssword");
       await user.type(pwRetype, "p4ssword");

@@ -30,9 +30,8 @@
         isLoading = false;
         submitState = "success";
       })
-      .catch((error) => {
-        console.log(error);
-        valErrors = { ...error.validationErrors }
+      .catch((axiosObject) => {
+        valErrors = { ...axiosObject.response.data.validationErrors }
         isLoading = false;
         submitState = "error";
       });

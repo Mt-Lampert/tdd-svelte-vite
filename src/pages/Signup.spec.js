@@ -33,10 +33,14 @@ function mockResponse(errors = {}) {
   if (errors === {}) return { message: "user created" };
 
   return {
-    message: "Bad request",
-    path: "/api/1.0/users",
-    timestamp: 1659173104555,
-    validationErrors: { ...errors },
+    response: {
+      data: {
+        message: "Bad request",
+        path: "/api/1.0/users",
+        timestamp: 1659173104555,
+        validationErrors: { ...errors },
+      },
+    },
   };
 }
 

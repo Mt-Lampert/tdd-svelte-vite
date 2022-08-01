@@ -2,6 +2,10 @@
 
 ## 2022-08-01
 
+## 15:05
+
+I had to adjust the error object format to the original format of axios response objects in the _catch_ branch.
+
 ### 11:10
 
 Using the mock system I built in commit '#8351af3', I built a working and tested validation message system for the `<Signup>` component. Worked flawlessly. Very, very nice!

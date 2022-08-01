@@ -1,5 +1,12 @@
 # Journal TDD-Svelte with Başar Büyükkharahman
 
+## 2022-08-01
+
+### 11:10
+
+Using the mock system I built in commit '#8351af3', I built a working and tested validation message system for the `<Signup>` component. Worked flawlessly. Very, very nice!
+
+
 ## 2022-07-28
 
 ### 18:00

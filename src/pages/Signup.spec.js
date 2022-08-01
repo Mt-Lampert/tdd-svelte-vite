@@ -24,7 +24,8 @@ const validationErrors = {
   password: {
     empty: "Password cannot be null",
     short: "Password must be at least 6 characters long",
-    invalid: "Password needs at least 1 uppercase letter, 1 lowercase letter and 1 number",
+    invalid:
+      "Password needs at least 1 uppercase letter, 1 lowercase letter and 1 number",
   },
 };
 
@@ -35,12 +36,9 @@ function mockResponse(errors = {}) {
     message: "Bad request",
     path: "/api/1.0/users",
     timestamp: 1659173104555,
-    validationErrors: {...errors}
-  }
+    validationErrors: { ...errors },
+  };
 }
-
-
-
 
 describe("Signup page", () => {
   describe("on markup level", () => {
@@ -124,25 +122,6 @@ describe("Signup page", () => {
       }
     );
 
-    it("disables signup button after clicking", async () => {
-      render(Signup);
-      const usernameInput = screen.getByLabelText("Your user name");
-      const emailInput = screen.getByLabelText("Your email");
-      const pwInput = screen.getByLabelText("Your password");
-      const pwRetype = screen.getByLabelText("Retype password");
-      const button = screen.getByRole("button", { name: "Submit" });
-
-      await user.type(usernameInput, "user111");
-      await user.type(emailInput, "user111@mail.com");
-      await user.type(pwInput, "p4ssword");
-      await user.type(pwRetype, "p4ssword");
-      await user.click(button);
-      await user.click(button);
-
-      const timesCalled = axios.post.mock.calls.length;
-      expect(timesCalled).toBe(1);
-    });
-
     it("sends signup data to the backend", async () => {
       render(Signup);
       const usernameInput = screen.getByLabelText("Your user name");
@@ -182,11 +161,13 @@ describe("Signup page", () => {
 
       const successMessage = await screen.findByText("Signup successful");
       expect(successMessage).toBeInTheDocument();
-      expect(successMessage.classList.contains("is-success")).toBe(true)
+      expect(successMessage.classList.contains("is-success")).toBe(true);
     });
 
     it("notifies user after failing signup", async () => {
-      axios.post.mockRejectedValue(mockResponse({username: validationErrors.userName.empty}));
+      axios.post.mockRejectedValue(
+        mockResponse({ username: validationErrors.userName.empty })
+      );
       render(Signup);
       const emailInput = screen.getByLabelText("Your email");
       const pwInput = screen.getByLabelText("Your password");
@@ -200,8 +181,19 @@ describe("Signup page", () => {
 
       const successMessage = await screen.findByText("Signup failed");
       expect(successMessage).toBeInTheDocument();
-      expect(successMessage.classList.contains("is-danger")).toBe(true)
+      expect(successMessage.classList.contains("is-danger")).toBe(true);
     });
 
+    it.todo("provides a message after username error");
+
+    it.todo("provides a message after email error");
+
+    it.todo("provides a message after password error");
+
+    it.todo("provides two messages after username and email error");
+
+    it.todo("provides two messages after username and password error");
+
+    it.todo("provides two messages after username and password error");
   });
 });

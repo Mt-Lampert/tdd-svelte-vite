@@ -184,16 +184,161 @@ describe("Signup page", () => {
       expect(successMessage.classList.contains("is-danger")).toBe(true);
     });
 
-    it.todo("provides a message after username error");
+    it("provides a message after username error", async () => {
+      axios.post.mockRejectedValue(
+        mockResponse({ username: validationErrors.userName.empty })
+      );
+      render(Signup);
+      const emailInput = screen.getByLabelText("Your email");
+      const pwInput = screen.getByLabelText("Your password");
+      const pwRetype = screen.getByLabelText("Retype password");
+      const button = screen.getByRole("button", { name: "Submit" });
 
-    it.todo("provides a message after email error");
+      await user.type(emailInput, "user111@mail.com");
+      await user.type(pwInput, "p4ssword");
+      await user.type(pwRetype, "p4ssword");
+      await user.click(button);
 
-    it.todo("provides a message after password error");
+      const errorMessage = await screen.findByText(
+        validationErrors.userName.empty
+      );
+      expect(errorMessage).toBeInTheDocument();
+    });
 
-    it.todo("provides two messages after username and email error");
+    it("provides a message after email error", async () => {
+      axios.post.mockRejectedValue(
+        mockResponse({ email: validationErrors.email.invalid })
+      );
+      render(Signup);
+      const usernameInput = screen.getByLabelText("Your user name");
+      const emailInput = screen.getByLabelText("Your email");
+      const pwInput = screen.getByLabelText("Your password");
+      const pwRetype = screen.getByLabelText("Retype password");
+      const button = screen.getByRole("button", { name: "Submit" });
 
-    it.todo("provides two messages after username and password error");
+      await user.type(usernameInput, "user 111");
+      await user.type(emailInput, "user111@");
+      await user.type(pwInput, "p4ssword");
+      await user.type(pwRetype, "p4ssword");
+      await user.click(button);
 
-    it.todo("provides two messages after username and password error");
+      const errorMessage = await screen.findByText(
+        validationErrors.email.invalid
+      );
+      expect(errorMessage).toBeInTheDocument();
+    });
+
+    it("provides a message after password error", async () => {
+      axios.post.mockRejectedValue(
+        mockResponse({ password: validationErrors.password.short })
+      );
+      render(Signup);
+      const usernameInput = screen.getByLabelText("Your user name");
+      const emailInput = screen.getByLabelText("Your email");
+      const pwInput = screen.getByLabelText("Your password");
+      const pwRetype = screen.getByLabelText("Retype password");
+      const button = screen.getByRole("button", { name: "Submit" });
+
+      await user.type(usernameInput, "user 111");
+      await user.type(emailInput, "user111@mail.com");
+      await user.type(pwInput, "p!ssword");
+      await user.type(pwRetype, "p!ssword");
+      await user.click(button);
+
+      const errorMessage = await screen.findByText(
+        validationErrors.password.short
+      );
+      expect(errorMessage).toBeInTheDocument();
+    });
+
+    it("provides two messages after username and email error", async () => {
+      axios.post.mockRejectedValue(
+        mockResponse({
+          username: validationErrors.userName.short,
+          email: validationErrors.email.invalid,
+        })
+      );
+      render(Signup);
+      const usernameInput = screen.getByLabelText("Your user name");
+      const emailInput = screen.getByLabelText("Your email");
+      const pwInput = screen.getByLabelText("Your password");
+      const pwRetype = screen.getByLabelText("Retype password");
+      const button = screen.getByRole("button", { name: "Submit" });
+
+      await user.type(usernameInput, "user");
+      await user.type(emailInput, "user@");
+      await user.type(pwInput, "p!ssword");
+      await user.type(pwRetype, "p!ssword");
+      await user.click(button);
+
+      const userError = await screen.findByText(
+        validationErrors.userName.short
+      );
+      const emailError = await screen.findByText(
+        validationErrors.email.invalid
+      );
+      expect(userError).toBeInTheDocument();
+      expect(emailError).toBeInTheDocument();
+    });
+
+    it("provides two messages after username and password error", async () => {
+      axios.post.mockRejectedValue(
+        mockResponse({
+          username: validationErrors.userName.empty,
+          password: validationErrors.password.invalid,
+        })
+      );
+      render(Signup);
+      const usernameInput = screen.getByLabelText("Your user name");
+      const emailInput = screen.getByLabelText("Your email");
+      const pwInput = screen.getByLabelText("Your password");
+      const pwRetype = screen.getByLabelText("Retype password");
+      const button = screen.getByRole("button", { name: "Submit" });
+
+      await user.type(usernameInput, "user111");
+      await user.type(emailInput, "user111@mail.com");
+      await user.type(pwInput, "p!ssword");
+      await user.type(pwRetype, "p!ssword");
+      await user.click(button);
+
+      const userError = await screen.findByText(
+        validationErrors.userName.empty
+      );
+      const emailError = await screen.findByText(
+        validationErrors.password.invalid
+      );
+      expect(userError).toBeInTheDocument();
+      expect(emailError).toBeInTheDocument();
+    });
+
+    it("provides two messages after email and password error", async () => {
+      axios.post.mockRejectedValue(
+        mockResponse({
+          email: validationErrors.email.invalid,
+          password: validationErrors.password.invalid,
+        })
+      );
+      render(Signup);
+      const usernameInput = screen.getByLabelText("Your user name");
+      const emailInput = screen.getByLabelText("Your email");
+      const pwInput = screen.getByLabelText("Your password");
+      const pwRetype = screen.getByLabelText("Retype password");
+      const button = screen.getByRole("button", { name: "Submit" });
+
+      await user.type(usernameInput, "user111");
+      await user.type(emailInput, "user111@");
+      await user.type(pwInput, "p!ssword");
+      await user.type(pwRetype, "p!ssword");
+      await user.click(button);
+
+      const passwordError = await screen.findByText(
+        validationErrors.password.invalid
+      );
+      const emailError = await screen.findByText(
+        validationErrors.password.invalid
+      );
+      expect(emailError).toBeInTheDocument();
+      expect(passwordError).toBeInTheDocument();
+    });
   });
 });

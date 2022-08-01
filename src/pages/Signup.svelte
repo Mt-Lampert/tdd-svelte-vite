@@ -7,6 +7,11 @@
   let password02 = "";
   let submitDisabled = true;
   let submitState = "";
+  let valErrors = {
+    username: "",
+    email: "",
+    password: "",
+  }
 
   let isLoading = false;
 
@@ -25,7 +30,9 @@
         isLoading = false;
         submitState = "success";
       })
-      .catch(() => {
+      .catch((error) => {
+        console.log(error);
+        valErrors = { ...error.validationErrors }
         isLoading = false;
         submitState = "error";
       });
@@ -48,6 +55,7 @@
       <div class="control">
         <input type="text" id="username" class="input" bind:value={username} />
       </div>
+      <div class="has-text-danger">{valErrors.username}</div>
     </div>
 
     <div class="field">
@@ -55,6 +63,7 @@
       <div class="control">
         <input type="text" id="email" class="input" bind:value={email} />
       </div>
+      <div class="has-text-danger">{valErrors.email}</div>
     </div>
 
     <div class="field">
@@ -78,6 +87,7 @@
           class="input"
           bind:value={password02}
         />
+        <div class="has-text-danger">{valErrors.password}</div>
       </div>
     </div>
 

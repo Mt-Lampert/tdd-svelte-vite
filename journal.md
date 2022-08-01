@@ -2,6 +2,10 @@
 
 ## 2022-08-01
 
+## 15:30
+
+We got _undefined_ in the browser version where there were no actual validation errors. Had to fix that.
+
 ## 15:05
 
 I had to adjust the error object format to the original format of axios response objects in the _catch_ branch.

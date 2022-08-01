@@ -11,7 +11,7 @@
     username: "",
     email: "",
     password: "",
-  }
+  };
 
   let isLoading = false;
 
@@ -31,7 +31,12 @@
         submitState = "success";
       })
       .catch((axiosObject) => {
-        valErrors = { ...axiosObject.response.data.validationErrors }
+        // if there's val errors in axiosObject, they will override
+        // the values in the current valErrors
+        valErrors = {
+          ...valErrors,
+          ...axiosObject.response.data.validationErrors,
+        };
         isLoading = false;
         submitState = "error";
       });

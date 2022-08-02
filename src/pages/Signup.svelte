@@ -1,4 +1,6 @@
 <script>
+// import { isDisabled } from "@testing-library/user-event/dist/types/utils";
+
   import axios from "axios";
 
   let username = "";
@@ -99,7 +101,7 @@
       <div class="control block is-centered">
         <button
           class={isLoading ? loadingButton : normalButton}
-          disabled={submitDisabled}>Submit</button
+          disabled={submitDisabled || submitState === "success"}>Submit</button
         >
       </div>
     </div>

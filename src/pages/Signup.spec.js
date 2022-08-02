@@ -344,5 +344,23 @@ describe("Signup page", () => {
       expect(emailError).toBeInTheDocument();
       expect(passwordError).toBeInTheDocument();
     });
+
+    it("disables button after successful signup", async () => {
+      axios.post.mockResolvedValue(mockResponse());
+      render(Signup);
+      const usernameInput = screen.getByLabelText("Your user name");
+      const emailInput = screen.getByLabelText("Your email");
+      const pwInput = screen.getByLabelText("Your password");
+      const pwRetype = screen.getByLabelText("Retype password");
+      const button = screen.getByRole("button", { name: "Submit" });
+
+      await user.type(usernameInput, "user111");
+      await user.type(emailInput, "user111@mail.com");
+      await user.type(pwInput, "p4ssword");
+      await user.type(pwRetype, "p4ssword");
+      await user.click(button); 
+
+      expect(button).toBeDisabled();
+    })
   });
 });

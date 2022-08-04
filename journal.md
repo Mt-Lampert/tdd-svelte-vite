@@ -2,15 +2,31 @@
 
 ## 2022-08-03
 
+Included the basic navbar into `App.svelte` and integrated the `<Links>` into the routing system.
+
+What I found was that we can outsource any project-internal link into another component, but testing the link will only work in the component where the `<Router>` context is setting things right.
+
+Which means on the other hand, that once an internal link is needed in a component, that component can
+only be tested within `App.spec.js` because of setting up the Router Context. There must be a workaround
+for that. I remember _Memory Routing_ in react-router-dom.
+
+## 2022-08-03
+
+### 19:10
+
 Working with `svelte-routing`
 
 1. Install as instructed on the [Github page](https://github.com/EmilTholin/svelte-routing).
-3. Import `<Router>` into _App.svelte:_
+2. Import `<Router>` into _App.svelte:_
   ```svelte
   <script>
-    import Router from "svelte-routing";
+    import { Router } from "svelte-routing";
   </script>
   ```
+3. Wrap the whole markup in _App.svelte_ into the `<Router>` context.
+0. Add `<Route>` elements inside the `<Router>` context.
+0. Add `<Link>` elements wherever you need to link to a defined `<Route>`.
+
 
 
 

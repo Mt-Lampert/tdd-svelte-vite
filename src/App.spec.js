@@ -1,17 +1,26 @@
-/*
 import "@testing-library/jest-dom";
-import {
-  findByTestId,
-  findByText,
-  render,
-  screen,
-} from "@testing-library/svelte";
+import { render, screen } from "@testing-library/svelte";
+/*
 import userEvent from "@testing-library/user-event";
 import { vi } from "vitest";
-import App from "./App.svelte";
 */
+import App from "./App.svelte";
 
 describe("App component", () => {
+  describe("importing the navbar", () => {
+    it.each([
+      { route: "/", desc: "LandingPage", testID: "home-link" },
+      { route: "/signup", desc: "Signup", testID: "signup" },
+      { route: "/login", desc: "Login", testID: "login" },
+      { route: "/users", desc: "Users", testID: "users-page" },
+    ])("has a link for <$desc>", ({ route, desc, testID }) => {
+      render(App);
+      const link = screen.queryByTestId(testID);
+      expect(link).toBeInTheDocument();
+      expect(link.getAttribute("href")).toBe(route);
+    });
+  });
+
   describe("in Routing context", () => {
     it.todo("displays <LandingPage> at route '/'", () => {
       // use screen.queryByTestID()!

@@ -1,5 +1,24 @@
 # Journal TDD-Svelte with Başar Büyükkharahman
 
+## 2022-08-03
+
+Working with `svelte-routing`
+
+1. Install as instructed on the [Github page](https://github.com/EmilTholin/svelte-routing).
+3. Import `<Router>` into _App.svelte:_
+  ```svelte
+  <script>
+    import Router from "svelte-routing";
+  </script>
+  ```
+
+
+
+
+### 17:00
+
+Going my own way with the nav bar. I will set up a component of its own with a test suite of its own. BB tries to integrate it into App.svelte. I won't.
+
 ## 2022-08-01
 
 ## 15:30

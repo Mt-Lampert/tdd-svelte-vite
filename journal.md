@@ -1,6 +1,13 @@
 # Journal TDD-Svelte with Başar Büyükkharahman
 
-## 2022-08-03
+
+## 2022-08-04
+
+### 18:55
+
+Finished the static routes! I really made it!
+
+### 09:10
 
 Included the basic navbar into `App.svelte` and integrated the `<Links>` into the routing system.
 

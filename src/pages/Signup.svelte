@@ -48,7 +48,7 @@
     password01.length < 6 || password02.length < 6 || password01 !== password02;
 </script>
 
-<div class="container is-max-desktop">
+<div class="container is-max-desktop" data-testid='signup-page'>
   <form
     action=""
     on:submit|once|preventDefault={submit}
